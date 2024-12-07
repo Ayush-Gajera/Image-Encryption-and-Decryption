@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Encryption & Decryption</title>
+</head>
+<body>
+    <h1>Image Encryption & Decryption</h1>
+
+    <h2>Encrypt an Image</h2>
+    <form id="encrypt-form" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="button" onclick="encryptImage()">Encrypt</button>
+    </form>
+    <p id="encryption-key" style="color: green; font-weight: bold;"></p>
+
+    <h2>Decrypt an Image</h2>
+    <form id="decrypt-form" enctype="multipart/form-data">
+        <input type="file" name="encrypted_image" accept="image/*" required>
+        <input type="text" id="decryption-key" name="key" placeholder="Enter the key" required>
+        <button type="button" onclick="decryptImage()">Decrypt</button>
+    </form>
+
+    <script>
+        function encryptImage() {
+            const form = document.getElementById('encrypt-form');
+            const formData = new FormData(form);
+
+            fetch('/encrypt', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById('encryption-key').innerText = `Encryption Key: ${data.key}`;
+                    alert("Image encrypted successfully. Download from: " + data.download_url);
+                }
+            })
+            .catch(err => alert("An error occurred: " + err));
+        }
+
+        function decryptImage() {
+            const form = document.getElementById('decrypt-form');
+            const formData = new FormData(form);
+
+            fetch('/decrypt', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob();
+                } else {
+                    return response.json().then(err => { throw err; });
+                }
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'decrypted_image.jpg';
+                a.click();
+            })
+            .catch(err => alert("Error: " + (err.error || err)));
+        }
+    </script>
+</body>
+</html>
