@@ -28,12 +28,7 @@ This project demonstrates how to encrypt and decrypt image files. It provides a 
 
 The system uses Python and implements cryptographic techniques to ensure data confidentiality and integrity for image-based file handling.
 
-# 🚀 Features
-#### ✅ Image Encryption: Encrypt image files securely.
-#### ✅ Image Decryption: Decrypt encrypted image files back to their original state.
-#### ✅ GUI Interface (Optional): A user-friendly interface for easier interaction (with Tkinter, if applicable).
-#### ✅ File Selection Dialogs: Use dialog boxes for selecting image files to encrypt or decrypt.
-#### ✅ Secure Key Usage: Encrypt and decrypt images with a user-provided key for added security.
+
 
 
 # 📁 Installation
